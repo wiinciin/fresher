@@ -1,15 +1,11 @@
-package com.example.demo.dto.response;
-
+package com.example.demo.dto.request;
 
 import lombok.Data;
 
-
-
 @Data
-public class BcResponse {
-    private int id;
-    private int idUser;
+public class FresherRequest {
     private String username;
+    private String password;
     private String name;
     private String email;
     private String phoneNumber;

@@ -7,24 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.request.UsersRequest;
-import com.example.demo.dto.request.BcRequest;
-import com.example.demo.dto.response.BcResponse;
+import com.example.demo.dto.request.FresherRequest;
+import com.example.demo.dto.response.FresherResponse;
 import com.example.demo.entity.Users;
-import com.example.demo.entity.Bc;
-import com.example.demo.repository.BcRepository;
+import com.example.demo.entity.Fresher;
+import com.example.demo.repository.FresherRepository;
 
 
 @Service
-public class BcService {
+public class FresherService {
 
     @Autowired
-    private BcRepository fresherRepository;
+    private FresherRepository fresherRepository;
 
     @Autowired
     private UsersService usersService;
 
 
-    public BcResponse addBc(BcRequest fresherReqDto) {
+    public FresherResponse addFresher(FresherRequest fresherReqDto) {
         try{
             UsersRequest userReq = new UsersRequest();
             userReq.setUsername(fresherReqDto.getUsername());
@@ -33,7 +33,7 @@ public class BcService {
             userReq.setEmail(fresherReqDto.getEmail());
             userReq.setPhoneNumber(fresherReqDto.getPhoneNumber());
             Users user = usersService.addUsers(userReq);
-            Bc fresher = new Bc();
+            Fresher fresher = new Fresher();
             fresher.setUser(user);
             fresher.setProgrammingLanguage(fresherReqDto.getProgrammingLanguage());
             return convertToDTO(fresherRepository.save(fresher));
@@ -42,16 +42,16 @@ public class BcService {
         }
     }
     
-    // Lấy tất cả Bcs
-    public List<BcResponse> getAllBc() {
+    // Lấy tất cả Freshers
+    public List<FresherResponse> getAllFresher() {
         return fresherRepository.findAll().stream()
                 .filter(fresher -> fresher.getUser() != null)
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
     
-    public Bc getBc(int id) {
-        Bc fresher = fresherRepository.findById(id)
+    public Fresher getFresher(int id) {
+        Fresher fresher = fresherRepository.findById(id)
                .orElseThrow(() -> new RuntimeException("User không tồn tại"));
         if (fresher.getUser()==null) {
             fresherRepository.save(fresher);
@@ -60,15 +60,15 @@ public class BcService {
         return fresher;
     }
 
-    // Cập nhật Bc
-    public BcResponse updateBc(int id, BcRequest req) {
-        Bc fresher = getBc(id);
+    // Cập nhật Fresher
+    public FresherResponse updateFresher(int id, FresherRequest req) {
+        Fresher fresher = getFresher(id);
         fresher.setProgrammingLanguage(req.getProgrammingLanguage());
         return convertToDTO(fresherRepository.save(fresher));
     }
 
-    // Xóa Bc theo ID
-    public boolean deleteBc(int id) {
+    // Xóa Fresher theo ID
+    public boolean deleteFresher(int id) {
         try{
             fresherRepository.deleteById(id);
             return true;
@@ -77,8 +77,8 @@ public class BcService {
         }
     }
 
-    public BcResponse convertToDTO(Bc fresher){
-        BcResponse fresherResDto = new BcResponse();
+    public FresherResponse convertToDTO(Fresher fresher){
+        FresherResponse fresherResDto = new FresherResponse();
         Users user = fresher.getUser();
         fresherResDto.setId(fresher.getId());
         fresherResDto.setIdUser(user.getId());

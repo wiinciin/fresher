@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Bc {
+public class Fresher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

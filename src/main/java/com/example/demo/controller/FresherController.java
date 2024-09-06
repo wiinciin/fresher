@@ -13,34 +13,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.request.BcRequest;
-import com.example.demo.dto.response.BcResponse;
-import com.example.demo.entity.Bc;
-import com.example.demo.service.BcService;
+import com.example.demo.dto.request.FresherRequest;
+import com.example.demo.dto.response.FresherResponse;
+import com.example.demo.entity.Fresher;
+import com.example.demo.service.FresherService;
 
 @RestController
 @RequestMapping("/freshers")
-public class BcController {
+public class FresherController {
 
     @Autowired
-    private BcService fresherService;
+    private FresherService fresherService;
 
     // Thêm mới Fresher
     @PostMapping
-    public BcResponse createFresher(@RequestBody BcRequest fresherReqDto) {
-        return fresherService.addBc(fresherReqDto);
+    public FresherResponse createFresher(@RequestBody FresherRequest fresherReqDto) {
+        return fresherService.addFresher
+    (fresherReqDto);
     }
 
     // Lấy tất cả Freshers
     @GetMapping
-    public List<BcResponse> getAllFreshers() {
-        return fresherService.getAllBc();
+    public List<FresherResponse> getAllFreshers() {
+        return fresherService.getAllFresher
+    ();
     }
 
     // Lấy Fresher theo ID
     @GetMapping("/{id}")
-    public ResponseEntity<BcResponse> getFresherById(@PathVariable int id) {
-        Bc fresher = fresherService.getBc(id);
+    public ResponseEntity<FresherResponse> getFresherById(@PathVariable int id) {
+        Fresher fresher = fresherService.getFresher
+    (id);
         if (fresher == null) {
             return ResponseEntity.notFound().build();
         }
@@ -49,9 +52,10 @@ public class BcController {
 
     // Cập nhật Fresher
     @PutMapping("/{id}")
-    public ResponseEntity<BcResponse> updateFresher(@PathVariable int id, @RequestBody BcRequest req) {
+    public ResponseEntity<FresherResponse> updateFresher(@PathVariable int id, @RequestBody FresherRequest req) {
         try {
-            BcResponse updatedFresher = fresherService.updateBc(id, req);
+            FresherResponse updatedFresher = fresherService.updateFresher
+        (id, req);
             return ResponseEntity.ok(updatedFresher);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -61,7 +65,8 @@ public class BcController {
     // Xóa Fresher theo ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFresher(@PathVariable int id) {
-        fresherService.deleteBc(id);
+        fresherService.deleteFresher
+    (id);
         return ResponseEntity.noContent().build();
     }
 }
